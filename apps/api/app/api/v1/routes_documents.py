@@ -134,7 +134,7 @@ async def get_download_link(document_id: UUID, user: PatientUser, session: Sessi
         raise HTTPException(status_code=404, detail="Document not found")
     try:
         async with httpx.AsyncClient(timeout=10) as client:
-            response = await client.post(f"{storage_object_url(item.storage_path)}/sign", headers={**storage_headers(), "Content-Type": "application/json"}, json={"expiresIn": 300})
+                        response = await client.post(storage_object_url(item.storage_path).replace("/storage/v1/object/", "/storage/v1/object/sign/", 1), headers={**storage_headers(), "Content-Type": "application/json"}, json={"expiresIn": 300})
         if response.status_code >= 400:
             raise HTTPException(status_code=502, detail="A temporary download link could not be created")
         signed_path = response.json()["signedURL"]
