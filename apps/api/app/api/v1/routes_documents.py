@@ -143,7 +143,7 @@ async def get_download_link(document_id: UUID, user: PatientUser, session: Sessi
     if signed_path.startswith("http"):
         url = signed_path
     else:
-        url = f"{settings.supabase_url.rstrip('/')}{signed_path if signed_path.startswith('/') else '/' + signed_path}"
+                url = f"{settings.supabase_url.rstrip('/')}/storage/v1{signed_path if signed_path.startswith('/') else '/' + signed_path}"
     log_event(session, actor_user_id=user.id, patient_id=profile.id, action="document_download_link_created", resource_type="patient_document", resource_id=item.id)
     await session.commit()
     return DocumentDownloadView(url=url, expires_in=300)
