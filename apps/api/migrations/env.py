@@ -8,6 +8,11 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from app.core.config import settings
 from app.db.base import Base
 from app.models.user import User
+from app.models.patient import PatientProfile
+from app.models.provider import ProviderProfile
+from app.models.record import HealthRecord
+from app.models.document import PatientDocument
+from app.models.audit_log import AuditLog
 
 config = context.config
 # ConfigParser treats percent signs as interpolation markers. URL-encoded

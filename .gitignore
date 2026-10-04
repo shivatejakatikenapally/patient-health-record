@@ -12,3 +12,5 @@ build/
 coverage/
 .venv/
 venv/
+*.egg-info/
+.api-dependencies/

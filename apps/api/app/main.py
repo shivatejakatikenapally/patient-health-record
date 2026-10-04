@@ -7,6 +7,9 @@ from redis.asyncio import Redis
 from sqlalchemy import text
 
 from app.api.v1.routes_auth import router as auth_router
+from app.api.v1.routes_profiles import router as profiles_router
+from app.api.v1.routes_records import router as records_router
+from app.api.v1.routes_documents import router as documents_router
 from app.core.config import settings
 from app.db.session import SessionFactory, engine
 
@@ -24,10 +27,13 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[origin.strip() for origin in settings.web_origins.split(",") if origin.strip()],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "X-File-Name"],
 )
 app.include_router(auth_router, prefix=settings.api_v1_prefix)
+app.include_router(profiles_router, prefix=settings.api_v1_prefix)
+app.include_router(records_router, prefix=settings.api_v1_prefix)
+app.include_router(documents_router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/health/live", tags=["health"])

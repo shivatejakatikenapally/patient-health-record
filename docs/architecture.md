@@ -1,4 +1,4 @@
-# Phase 0 architecture
+# Phase 0 and Phase 1 architecture
 
 ## Trust boundaries
 
@@ -15,9 +15,15 @@ The QR/reference ID is an identifier only. It must never contain health informat
 5. `/auth/me` validates the token and reads the account from PostgreSQL.
 6. Redis and private object storage are configured as hosted dependencies and checked by readiness diagnostics.
 
-## Phase 0 limits
+## Phase 1 behavior
 
-Role selection is scaffolding, not identity verification. Phase 0 does not verify patient identity, verify provider credentials, create clinical records, or grant patient-data access. It must not be represented as production clinical software. No real patient data should be entered until a security review and appropriate operational controls are completed.
+Patient and provider profiles are owner-scoped. Patients can create and edit their own timeline records and documents. Every profile, record, and document read or write appends a metadata-only event to `audit_logs`. Providers can view and edit only their own profile; no provider route can read patient records in this phase. Patient uploads go to the private Supabase Storage bucket. The API checks the requesting patient's ownership before returning a five-minute signed download URL.
+
+Reference IDs are unique account identifiers, not identity credentials. Provider verification stays pending until a real credential verification integration is added. All four Phase 1 tables and the audit log have row-level security enabled without public policies; the FastAPI backend enforces per-owner access using its private database connection.
+
+## Phase 0 and Phase 1 limits
+
+Role selection is scaffolding, not identity verification. The current version does not verify patient identity or provider credentials, and Phase 1 does not grant provider access to patient data. It must not be represented as production clinical software. Use synthetic data until a security review and appropriate operational controls are completed.
 
 ## Deployment choices
 

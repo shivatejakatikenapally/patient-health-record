@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, LoaderCircle } from "lucide-react";
 import { authenticate, type AccountRole } from "@/app/lib/api-client";
+import { saveAccessToken } from "@/app/lib/auth";
 
 const roles: { value: AccountRole; label: string; detail: string }[] = [
   { value: "patient", label: "Patient", detail: "Manage your health record and consent." },
@@ -11,6 +13,7 @@ const roles: { value: AccountRole; label: string; detail: string }[] = [
 ];
 
 export function AuthForm() {
+  const router = useRouter();
   const [mode, setMode] = useState<"register" | "login">("register");
   const [role, setRole] = useState<AccountRole>("patient");
   const [email, setEmail] = useState("");
@@ -25,8 +28,10 @@ export function AuthForm() {
     setMessage("");
     try {
       const result = await authenticate(mode, { email, password, ...(mode === "register" ? { role } : {}) });
-      sessionStorage.setItem("ps3-access-token", result.access_token);
-      setMessage(`Signed in as ${result.user.role}. This Phase 0 account does not yet access patient records.`);
+      saveAccessToken(result.access_token);
+      if (result.user.role === "patient") router.replace("/patient/dashboard");
+      else if (result.user.role === "provider") router.replace("/provider/dashboard");
+      else setMessage("Your caregiver account is ready. Caregiver tools are not included in this phase.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Could not complete sign in.");
     } finally {
@@ -49,7 +54,7 @@ export function AuthForm() {
         <button className="primary-button" type="submit" disabled={busy}>{busy ? <><LoaderCircle className="spin" size={17} /> Connecting</> : mode === "register" ? "Create account" : "Sign in"}</button>
         {message && <p className="form-message" role="status">{message}</p>}
       </form>
-      <p className="security-note">Your account password is hashed before it is stored. Health record access is not part of this foundation phase.</p>
+      <p className="security-note">Patient records are available only to the signed-in patient in this phase. Provider access to patient records is not enabled.</p>
     </section>
   );
 }

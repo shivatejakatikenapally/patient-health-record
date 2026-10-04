@@ -10,7 +10,7 @@ export default function HomePage() {
         <section className="intro-panel"><p className="eyebrow">PATIENT-HELD · CONSENT-DRIVEN</p><h1>Your records.<br />Your permission.</h1><p className="intro-copy">A longitudinal health record where care providers request access and you decide what they can see, why, and for how long.</p><div className="principle"><span className="principle-icon"><ShieldCheck size={19} /></span><div><b>A QR code identifies you.</b><p>It never gives a provider access to your health information. You approve each request.</p></div></div><Link className="learn-link" href="/scan/demo-ref"><span>See how patient identification works</span><ArrowRight size={16} /></Link></section>
         <AuthForm />
       </div>
-      <footer className="site-footer"><span>Phase 0 foundation · No clinical data is stored yet</span><Link href="/scan/demo-ref">Provider or patient? Start with a reference ID <ArrowRight size={13} /></Link></footer>
+      <footer className="site-footer"><span>Phase 1 · Patient-owned records · Provider profile</span><Link href="/scan/demo-ref">Provider or patient? Start with a reference ID <ArrowRight size={13} /></Link></footer>
     </main>
   );
 }
