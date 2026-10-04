@@ -32,8 +32,13 @@ class Settings(BaseSettings):
     @field_validator("redis_url")
     @classmethod
     def require_hosted_redis(cls, value: str) -> str:
-        if not value.startswith("rediss://") or "HOST" in value or "PASSWORD" in value:
-            raise ValueError("REDIS_URL must be a TLS connection URL for hosted Redis")
+        if not value.startswith(("redis://", "rediss://")) or "HOST" in value or "PASSWORD" in value:
+            raise ValueError("REDIS_URL must be a connection URL for hosted Redis")
+        redis_host = make_url(value).host
+        if redis_host in {"localhost", "127.0.0.1", "::1"}:
+            raise ValueError("REDIS_URL must point to the hosted Redis instance")
+        if value.startswith("redis://") and not redis_host.startswith("red-"):
+            raise ValueError("Unencrypted Redis URLs are allowed only for Render's private Key Value network")
         return value
 
     @field_validator("supabase_url")
