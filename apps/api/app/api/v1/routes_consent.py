@@ -23,7 +23,7 @@ from app.services.consent_service.service import (
     revoke_consent,
 )
 from app.services.patient_record_service.service import (
-    get_consented_document_download_for_provider as get_doc_download,
+    get_document_download_for_provider as get_doc_download,
     get_documents_for_provider,
     get_patient_summary_for_provider,
     get_records_for_provider,
