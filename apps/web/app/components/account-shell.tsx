@@ -8,8 +8,16 @@ import { apiFetch, type AccountRole } from "@/app/lib/api-client";
 import { clearAccessToken } from "@/app/lib/auth";
 
 const links = {
-  patient: [{ href: "/patient/dashboard", label: "Overview" }, { href: "/timeline", label: "Timeline" }, { href: "/documents", label: "Documents" }],
-  provider: [{ href: "/provider/dashboard", label: "Profile" }],
+  patient: [
+    { href: "/patient/dashboard", label: "Overview" },
+    { href: "/timeline", label: "Timeline" },
+    { href: "/documents", label: "Documents" },
+    { href: "/consents", label: "Consent requests" },
+  ],
+  provider: [
+    { href: "/provider/dashboard", label: "Profile" },
+    { href: "/request-access", label: "Request access" },
+  ],
 };
 
 export function AccountShell({ role, children }: { role: "patient" | "provider"; children: ReactNode }) {

@@ -13,6 +13,7 @@ from app.models.provider import ProviderProfile
 from app.models.record import HealthRecord
 from app.models.document import PatientDocument
 from app.models.audit_log import AuditLog
+from app.models.consent import Consent
 
 config = context.config
 # ConfigParser treats percent signs as interpolation markers. URL-encoded

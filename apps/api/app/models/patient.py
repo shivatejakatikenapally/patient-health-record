@@ -19,3 +19,4 @@ class PatientProfile(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     records: Mapped[list["HealthRecord"]] = relationship(back_populates="patient", cascade="all, delete-orphan")
     documents: Mapped[list["PatientDocument"]] = relationship(back_populates="patient", cascade="all, delete-orphan")
+    consents: Mapped[list["Consent"]] = relationship("Consent", back_populates="patient", cascade="all, delete-orphan")
