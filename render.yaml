@@ -5,6 +5,7 @@ services:
     plan: free
     region: singapore
     rootDir: apps/api
+    autoDeploy: true
     buildCommand: pip install .
     startCommand: sh -c 'alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT'
     healthCheckPath: /health/ready
